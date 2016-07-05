@@ -1,8 +1,7 @@
-// kan2num.go
+// Package kan2num is 漢数字を数字に変えるやつ
 package kan2num
 
 import (
-	"errors"
 	"fmt"
 	"regexp"
 	"strconv"
@@ -10,15 +9,20 @@ import (
 	"github.com/Knetic/govaluate"
 )
 
+//BreakSymbol : 10000の倍数の単位
 var BreakSymbol = map[string]int64{"万": 10000,
 	"億": 10000 * 10000,
 	"兆": 10000 * 10000 * 10000,
 	"京": 10000 * 10000 * 10000 * 10000,
 }
+
+//NonBreakSymbol :10000の倍数以外の単位
 var NonBreakSymbol = map[string]int64{"十": 10, "拾": 10,
 	"百": 100,
 	"千": 1000,
 }
+
+//Numbers :数字と互換性のある文字列
 var Numbers = map[string]int64{"零": 0, "〇": 0, "○": 0,
 	"一": 1, "壱": 1,
 	"二": 2, "弐": 2,
@@ -28,6 +32,7 @@ var Numbers = map[string]int64{"零": 0, "〇": 0, "○": 0,
 	"０": 0, "１": 1, "２": 2, "３": 3, "４": 4, "５": 5, "６": 6, "７": 7, "８": 8, "９": 9,
 }
 
+//Kan2num :漢数字を数字に変換する。
 func Kan2num(_word string) (float64, error) {
 	var word = _word
 	word = clean(word)
@@ -45,7 +50,7 @@ func Kan2num(_word string) (float64, error) {
 	defer func() {
 		err2 := recover()
 		if err2 != nil {
-			err = errors.New(fmt.Sprintf("%s", err2))
+			err = fmt.Errorf("%s", err2)
 		}
 	}()
 
@@ -59,13 +64,13 @@ func clean(_word string) string {
 	var word = _word
 	var re *regexp.Regexp
 
-	for key, _ = range BreakSymbol {
+	for key = range BreakSymbol {
 		targets += key
 	}
-	for key, _ = range NonBreakSymbol {
+	for key = range NonBreakSymbol {
 		targets += key
 	}
-	for key, _ = range Numbers {
+	for key = range Numbers {
 		targets += key
 	}
 
@@ -105,7 +110,7 @@ func makeFormula(_word string) string {
 
 	//BreakSymbol
 	targets = ""
-	for key, _ = range BreakSymbol {
+	for key = range BreakSymbol {
 		targets += key
 	}
 	re = regexp.MustCompile("([" + targets + "])")
@@ -113,7 +118,7 @@ func makeFormula(_word string) string {
 
 	//NonBreakSymbol
 	targets = ""
-	for key, _ = range NonBreakSymbol {
+	for key = range NonBreakSymbol {
 		targets += key
 	}
 	re = regexp.MustCompile("([" + targets + "])")
