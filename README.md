@@ -1,4 +1,7 @@
 # kan2num
+
+[![CircleCI](https://circleci.com/gh/kurehajime/kan2num.svg?style=svg)](https://circleci.com/gh/kurehajime/kan2num)
+
 漢数字を数字に変換するやつ
 
 
@@ -33,7 +36,7 @@ func main(){
 
 ## インストール方法
 
-[ここから](https://github.com/kurehajime/kan2num/releases)ダウンロード
+[ここから](https://github.com/kurehajime/kan2num/releases)ダウンロード。
 
 ライブラリとして利用する場合はgo getで。
 
