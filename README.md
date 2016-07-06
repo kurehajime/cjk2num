@@ -1,4 +1,4 @@
-# kan2num
+# cjk2num
 
 [![CircleCI](https://circleci.com/gh/kurehajime/cjk2num.svg?style=svg)](https://circleci.com/gh/kurehajime/cjk2num) / [GoDoc](https://godoc.org/github.com/kurehajime/cjk2num)
 
@@ -13,7 +13,7 @@
 
 
 ```
-$ kan2num 二百五十一
+$ cjk2num 二百五十一
 
 >251
 ```
@@ -24,12 +24,12 @@ $ kan2num 二百五十一
 
 ```
 import (
-	"github.com/kurehajime/kan2num"
+	"github.com/kurehajime/cjk2num"
 )
 func main(){
   var num float64
   var 漢数字="千二百六十万"
-  num, err := kan2num.Convert(漢数字)
+  num, err := cjk2num.Convert(漢数字)
   if err != nil {
     Println(err.Error())
   }
@@ -39,10 +39,10 @@ func main(){
 
 ## インストール方法
 
-[ここから](https://github.com/kurehajime/kan2num/releases)ダウンロード。
+[ここから](https://github.com/kurehajime/cjk2num/releases)ダウンロード。
 
 ライブラリとして利用する場合はgo getで。
 
 ```
-$ go get -u github.com/kurehajime/kan2num/...
+$ go get -u github.com/kurehajime/cjk2num/...
 ```
