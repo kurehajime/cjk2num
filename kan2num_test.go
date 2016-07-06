@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func Convert(t *testing.T) {
+func TestConvert(t *testing.T) {
 	check(t, "一億三千万二百十五", 130000215.0)
 	check(t, "一億", 100000000.0)
 	check(t, "千拾", 1010.0)
