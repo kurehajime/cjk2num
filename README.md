@@ -1,10 +1,10 @@
 # kan2num
 
-[![CircleCI](https://circleci.com/gh/kurehajime/cjk2num.svg?style=svg)](https://circleci.com/gh/kurehajime/cjk2num)
+[![CircleCI](https://circleci.com/gh/kurehajime/cjk2num.svg?style=svg)](https://circleci.com/gh/kurehajime/cjk2num) / [GoDoc](https://godoc.org/github.com/kurehajime/cjk2num)
+
 
 漢数字を数字に変換するやつ
 
-[GoDoc](https://godoc.org/github.com/kurehajime/cjk2num)
 
 
 ## コマンドとしての使い方
