@@ -26,7 +26,7 @@ import (
 func main(){
   var num float64
   var 漢数字="千二百六十万"
-  num, err := kan2num.Kan2num(漢数字)
+  num, err := kan2num.Convert(漢数字)
   if err != nil {
     Println(err.Error())
   }
