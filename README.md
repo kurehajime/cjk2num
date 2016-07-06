@@ -4,12 +4,13 @@
 
 漢数字を数字に変換するやつ
 
+[GoDoc](https://godoc.org/github.com/kurehajime/cjk2num)
+
 
 ## コマンドとしての使い方
 
 漢数字を引数として渡すと数字に変換してくれる
 
-[GoDoc](https://godoc.org/github.com/kurehajime/cjk2num)
 
 ```
 $ kan2num 二百五十一
