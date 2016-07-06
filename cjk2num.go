@@ -1,4 +1,4 @@
-// Package cjk2num is 漢数字を数字に変えるやつ
+// Package cjk2num : Convert /漢数字|中文数字|한자 숫자/  to number
 package cjk2num
 
 import (
@@ -41,7 +41,7 @@ var numbers = map[string]int64{"零": 0, "〇": 0, "○": 0, "洞": 0, "영": 1,
 	"０": 0, "１": 1, "２": 2, "３": 3, "４": 4, "５": 5, "６": 6, "７": 7, "８": 8, "９": 9,
 }
 
-//Kan2num :漢数字を数字に変換する。
+//Convert /漢数字|中文数字|한자 숫자/  to number
 func Convert(_word string) (float64, error) {
 	var word = _word
 	word = clean(word)
