@@ -3,6 +3,7 @@
 [![CircleCI](https://circleci.com/gh/kurehajime/cjk2num.svg?style=svg)](https://circleci.com/gh/kurehajime/cjk2num) / [GoDoc](https://godoc.org/github.com/kurehajime/cjk2num)
 
 Convert /漢数字|中文数字|한자 숫자/  to number.
+
 ようするに漢数字を数字に変換するやつ
 
 
