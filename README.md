@@ -1,6 +1,6 @@
 # kan2num
 
-[![CircleCI](https://circleci.com/gh/kurehajime/kan2num.svg?style=svg)](https://circleci.com/gh/kurehajime/kan2num)
+[![CircleCI](https://circleci.com/gh/kurehajime/cjk2num.svg?style=svg)](https://circleci.com/gh/kurehajime/cjk2num)
 
 漢数字を数字に変換するやつ
 
