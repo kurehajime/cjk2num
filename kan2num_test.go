@@ -1,10 +1,10 @@
-package kan2num
+package cjk2num
 
 import (
 	"testing"
 )
 
-func TestKan2num(t *testing.T) {
+func Convert(t *testing.T) {
 	check(t, "一億三千万二百十五", 130000215.0)
 	check(t, "一億", 100000000.0)
 	check(t, "千拾", 1010.0)
@@ -16,7 +16,7 @@ func TestKan2num(t *testing.T) {
 
 }
 func check(t *testing.T, input string, ans float64) {
-	res, err := Kan2num(input)
+	res, err := Convert(input)
 	if err != nil {
 		t.Errorf("%s\n", err.Error())
 	}

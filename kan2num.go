@@ -1,5 +1,5 @@
-// Package kan2num is 漢数字を数字に変えるやつ
-package kan2num
+// Package cjk2num is 漢数字を数字に変えるやつ
+package cjk2num
 
 import (
 	"fmt"
@@ -10,20 +10,20 @@ import (
 )
 
 //BreakSymbol : 10000の倍数の単位
-var BreakSymbol = map[string]int64{"万": 10000,
+var breakSymbol = map[string]int64{"万": 10000,
 	"億": 10000 * 10000,
 	"兆": 10000 * 10000 * 10000,
 	"京": 10000 * 10000 * 10000 * 10000,
 }
 
 //NonBreakSymbol :10000の倍数以外の単位
-var NonBreakSymbol = map[string]int64{"十": 10, "拾": 10,
+var nonBreakSymbol = map[string]int64{"十": 10, "拾": 10,
 	"百": 100,
 	"千": 1000,
 }
 
 //Numbers :数字と互換性のある文字列
-var Numbers = map[string]int64{"零": 0, "〇": 0, "○": 0,
+var numbers = map[string]int64{"零": 0, "〇": 0, "○": 0,
 	"一": 1, "壱": 1,
 	"二": 2, "弐": 2,
 	"三": 3, "参": 3,
@@ -33,7 +33,7 @@ var Numbers = map[string]int64{"零": 0, "〇": 0, "○": 0,
 }
 
 //Kan2num :漢数字を数字に変換する。
-func Kan2num(_word string) (float64, error) {
+func Convert(_word string) (float64, error) {
 	var word = _word
 	word = clean(word)
 	word = makeFormula(word)
@@ -64,13 +64,13 @@ func clean(_word string) string {
 	var word = _word
 	var re *regexp.Regexp
 
-	for key = range BreakSymbol {
+	for key = range breakSymbol {
 		targets += key
 	}
-	for key = range NonBreakSymbol {
+	for key = range nonBreakSymbol {
 		targets += key
 	}
-	for key = range Numbers {
+	for key = range numbers {
 		targets += key
 	}
 
@@ -84,17 +84,17 @@ func transNum(_word string) string {
 	var value int64
 	var word = _word
 	var re *regexp.Regexp
-	for key, value = range Numbers {
+	for key, value = range numbers {
 		re = regexp.MustCompile(key)
 		word = re.ReplaceAllString(word, strconv.FormatInt(value, 10))
 	}
 
-	for key, value = range BreakSymbol {
+	for key, value = range breakSymbol {
 		re = regexp.MustCompile(key)
 		word = re.ReplaceAllString(word, strconv.FormatInt(value, 10))
 	}
 
-	for key, value = range NonBreakSymbol {
+	for key, value = range nonBreakSymbol {
 		re = regexp.MustCompile(key)
 		word = re.ReplaceAllString(word, strconv.FormatInt(value, 10))
 	}
@@ -110,7 +110,7 @@ func makeFormula(_word string) string {
 
 	//BreakSymbol
 	targets = ""
-	for key = range BreakSymbol {
+	for key = range breakSymbol {
 		targets += key
 	}
 	re = regexp.MustCompile("([" + targets + "])")
@@ -118,7 +118,7 @@ func makeFormula(_word string) string {
 
 	//NonBreakSymbol
 	targets = ""
-	for key = range NonBreakSymbol {
+	for key = range nonBreakSymbol {
 		targets += key
 	}
 	re = regexp.MustCompile("([" + targets + "])")

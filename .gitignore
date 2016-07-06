@@ -2,3 +2,5 @@
 cmd/kan2num/kan2num
 
 bin
+
+cmd/cjk2num/cjk2num

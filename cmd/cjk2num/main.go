@@ -6,7 +6,7 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/kurehajime/kan2num"
+	"github.com/kurehajime/cjk2num"
 )
 
 func main() {
@@ -41,6 +41,6 @@ func main() {
 		fmt.Fprintln(os.Stderr, err.Error())
 		os.Exit(1)
 	}
-	num, err := kan2num.Kan2num(text)
+	num, err := cjk2num.Convert(text)
 	fmt.Println(fmt.Sprintf("%.0f", num))
 }
