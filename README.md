@@ -9,6 +9,8 @@
 
 漢数字を引数として渡すと数字に変換してくれる
 
+[GoDoc](https://godoc.org/github.com/kurehajime/cjk2num)
+
 ```
 $ kan2num 二百五十一
 
