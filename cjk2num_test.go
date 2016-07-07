@@ -17,7 +17,7 @@ func TestConvert(t *testing.T) {
 	check(t, "７十1", 71.0)
 
 	// expect error
-	if _, err := Convert("一億万円"); err == nil {
+	if _, err := Convert("一億万"); err == nil {
 		t.Errorf("passed invalid format \n")
 	}
 }
