@@ -42,5 +42,8 @@ func main() {
 		os.Exit(1)
 	}
 	num, err := cjk2num.Convert(text)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err.Error())
+	}
 	fmt.Println(fmt.Sprintf("%.0f", num))
 }
