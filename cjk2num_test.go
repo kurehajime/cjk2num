@@ -16,6 +16,10 @@ func TestConvert(t *testing.T) {
 	check(t, "二十三人", 23.0)
 	check(t, "７十1", 71.0)
 
+	// expect error
+	if _, err := Convert("一億万円"); err == nil {
+		t.Errorf("passed invalid format \n")
+	}
 }
 
 //Check

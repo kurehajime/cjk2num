@@ -45,6 +45,11 @@ var numbers = map[string]int64{"零": 0, "〇": 0, "○": 0, "洞": 0, "영": 1,
 func Convert(_word string) (float64, error) {
 	var word = _word
 	word = clean(word)
+
+	if checkFormat(word) == false {
+		return 0, fmt.Errorf("invalid format")
+	}
+
 	word = makeFormula(word)
 	word = transNum(word)
 
@@ -152,4 +157,23 @@ func makeFormula(_word string) string {
 	word = re.ReplaceAllString(word, "(0)")
 
 	return word
+}
+
+func checkFormat(_word string) bool {
+	var key string
+	var targets1 = ""
+	var targets2 = ""
+	var re *regexp.Regexp
+
+	for key = range nonBreakSymbol {
+		targets1 += key
+	}
+	for key = range numbers {
+		targets1 += key
+	}
+	for key = range breakSymbol {
+		targets2 += key
+	}
+	re = regexp.MustCompile("([" + targets1 + "]+" + "[" + targets2 + "]?)+")
+	return len(re.Find([]byte(_word))) == len([]byte(_word))
 }
