@@ -76,3 +76,10 @@ func Example_case6() {
 	fmt.Printf("%d", res)
 	//Output:56789
 }
+
+// Example ７
+func Example_case7() {
+	res, _ := Convert("3ダース")
+	fmt.Printf("%d", res)
+	//Output:36
+}

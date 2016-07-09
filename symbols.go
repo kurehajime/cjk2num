@@ -95,4 +95,5 @@ var symbols = []Symbol{
 	NumberSymbol{"칠", 7},
 	NumberSymbol{"팔", 8},
 	NumberSymbol{"구", 9},
+	AllBreakSymbol{"ダース", 12},
 }
