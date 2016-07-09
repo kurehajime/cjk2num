@@ -3,177 +3,95 @@ package cjk2num
 
 import (
 	"fmt"
-	"regexp"
-	"strconv"
-
-	"github.com/Knetic/govaluate"
+	"strings"
 )
 
-//BreakSymbol : 10000の倍数の単位
-var breakSymbol = map[string]int64{"万": 10000, "萬": 10000, "만": 10000,
-	"億": 10000 * 10000, "亿": 10000 * 10000,
-	"兆": 10000 * 10000 * 10000,
-	"京": 10000 * 10000 * 10000 * 10000,
+//Symbol 数字や単位など有効なすべての文字
+type Symbol interface {
+	//Key 対象となる文字
+	Key() string
+	//与えられたパラメータを元に数字や単位を反映させた結果を返す
+	Calc(stage1, stage2, stage3 int64) (int64, int64, int64, error)
 }
 
-//NonBreakSymbol :10000の倍数以外の単位
-var nonBreakSymbol = map[string]int64{"十": 10, "拾": 10, "십": 10,
-	"百": 100, "백": 100,
-	"千": 1000, "仟": 1000, "천": 1000,
-	"廿": 20,
-	"卅": 30,
-	"卌": 40,
-	"皕": 200,
+//BreakSymbol ex:兆億万...
+type BreakSymbol struct {
+	key   string
+	value int64
 }
 
-//Numbers :数字と互換性のある文字列
-var numbers = map[string]int64{"零": 0, "〇": 0, "○": 0, "洞": 0, "영": 1, "령": 1,
-	"一": 1, "壱": 1, "壹": 1, "幺": 1, "일": 1,
-	"二": 2, "弐": 2, "貳": 2, "两": 2, "이": 2,
-	"三": 3, "参": 3, "叁": 3, "삼": 3,
-	"四": 4, "肆": 4, "사": 4,
-	"五": 5, "伍": 5, "오": 5,
-	"六": 6, "陸": 6, "육": 6, "륙": 6,
-	"七": 7, "柒": 7, "칠": 7,
-	"八": 8, "捌": 8, "팔": 8,
-	"九": 9, "玖": 9, "구": 9,
-	"0": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9,
-	"０": 0, "１": 1, "２": 2, "３": 3, "４": 4, "５": 5, "６": 6, "７": 7, "８": 8, "９": 9,
-}
+func (sym BreakSymbol) Key() string { return sym.key }
 
-//Convert /漢数字|中文数字|한자 숫자/  to number
-func Convert(_word string) (float64, error) {
-	var word = _word
-	word = clean(word)
-
-	if checkFormat(word) == false {
-		return 0, fmt.Errorf("invalid format")
+func (sym BreakSymbol) Calc(stage1, stage2, stage3 int64) (int64, int64, int64, error) {
+	if (stage2 + stage1) == 0 {
+		return 0, 0, 0, fmt.Errorf("Error:Invalid value.[ ???%s]", sym.key)
 	}
+	return 0, 0, stage3 + (stage1+stage2)*sym.value, nil
+}
 
-	word = makeFormula(word)
-	word = transNum(word)
+//NonBreakSymbol ex:千百十...
+type NonBreakSymbol struct {
+	key   string
+	value int64
+}
 
-	//eval
-	expression, err := govaluate.NewEvaluableExpression(word)
-	parameters := make(map[string]interface{}, 0)
-	result, err := expression.Evaluate(parameters)
-	if err != nil {
-		return 0, err
+func (sym NonBreakSymbol) Key() string { return sym.key }
+
+func (sym NonBreakSymbol) Calc(stage1, stage2, stage3 int64) (int64, int64, int64, error) {
+	if stage1 == 0 {
+		return 0, stage2 + 1*sym.value, stage3, nil
 	}
+	return 0, stage2 + (stage1 * sym.value), stage3, nil
+}
 
-	defer func() {
-		err2 := recover()
-		if err2 != nil {
-			err = fmt.Errorf("%s", err2)
+//AllBreakSymbol ex:ダース...
+type AllBreakSymbol struct {
+	key   string
+	value int64
+}
+
+func (sym AllBreakSymbol) Key() string { return sym.key }
+
+func (sym AllBreakSymbol) Calc(stage1, stage2, stage3 int64) (int64, int64, int64, error) {
+	return 0, 0, (stage3 + stage2 + stage1) * sym.value, nil
+}
+
+//NumberSymbol ex:一二三壱弐参...
+type NumberSymbol struct {
+	key   string
+	value int64
+}
+
+func (sym NumberSymbol) Key() string { return sym.key }
+
+func (sym NumberSymbol) Calc(stage1, stage2, stage3 int64) (int64, int64, int64, error) {
+	return (stage1 * 10) + sym.value, stage2, stage3, nil
+}
+
+// Convert /漢数字|中文数字|한자 숫자/  to number
+func Convert(word string) (result int64, err error) {
+	runes := []rune(word)
+	var stage1, stage2, stage3 int64
+	defer func() { //オーバーフローでコケるかも
+		r := recover()
+		if r != nil {
+			result, err = 0, fmt.Errorf("%v", r)
 		}
 	}()
-
-	return result.(float64), err
-}
-
-//定義済みの文字以外は削除
-func clean(_word string) string {
-	var key string
-	var targets = ""
-	var word = _word
-	var re *regexp.Regexp
-
-	for key = range breakSymbol {
-		targets += key
+L:
+	for len(runes) > 0 {
+		for i := range symbols {
+			if strings.Index(string(runes), symbols[i].Key()) == 0 {
+				runes = runes[len([]rune(symbols[i].Key())):]
+				stage1, stage2, stage3, err = symbols[i].Calc(stage1, stage2, stage3)
+				if err != nil {
+					return 0, err
+				}
+				continue L
+			}
+		}
+		runes = runes[1:]
 	}
-	for key = range nonBreakSymbol {
-		targets += key
-	}
-	for key = range numbers {
-		targets += key
-	}
-
-	re = regexp.MustCompile("[^" + targets + "]")
-	word = re.ReplaceAllString(word, "")
-	return word
-}
-
-func transNum(_word string) string {
-	var key string
-	var value int64
-	var word = _word
-	var re *regexp.Regexp
-	for key, value = range numbers {
-		re = regexp.MustCompile(key)
-		word = re.ReplaceAllString(word, strconv.FormatInt(value, 10))
-	}
-
-	for key, value = range breakSymbol {
-		re = regexp.MustCompile(key)
-		word = re.ReplaceAllString(word, strconv.FormatInt(value, 10))
-	}
-
-	for key, value = range nonBreakSymbol {
-		re = regexp.MustCompile(key)
-		word = re.ReplaceAllString(word, strconv.FormatInt(value, 10))
-	}
-
-	return word
-}
-
-func makeFormula(_word string) string {
-	var key string
-	var targets = ""
-	var word = _word
-	var re *regexp.Regexp
-
-	//BreakSymbol
-	targets = ""
-	for key = range breakSymbol {
-		targets += key
-	}
-	re = regexp.MustCompile("([" + targets + "])")
-	word = re.ReplaceAllString(word, ")*$1)+((")
-
-	//NonBreakSymbol
-	targets = ""
-	for key = range nonBreakSymbol {
-		targets += key
-	}
-	re = regexp.MustCompile("([" + targets + "])")
-	word = re.ReplaceAllString(word, "*$1+")
-
-	word = "((" + word + "))"
-
-	//replace *+ -> +
-	re = regexp.MustCompile("\\+\\*")
-	word = re.ReplaceAllString(word, "+")
-
-	//replace +) -> +0)
-	re = regexp.MustCompile("\\+\\)")
-	word = re.ReplaceAllString(word, "+0)")
-
-	//replace (* -> (1*
-	re = regexp.MustCompile("\\(\\*")
-	word = re.ReplaceAllString(word, "(1*")
-
-	//replace +(()) -> +((0))
-	re = regexp.MustCompile("\\(\\)")
-	word = re.ReplaceAllString(word, "(0)")
-
-	return word
-}
-
-func checkFormat(_word string) bool {
-	var key string
-	var targets1 = ""
-	var targets2 = ""
-	var re *regexp.Regexp
-
-	for key = range nonBreakSymbol {
-		targets1 += key
-	}
-	for key = range numbers {
-		targets1 += key
-	}
-	for key = range breakSymbol {
-		targets2 += key
-	}
-	re = regexp.MustCompile("([" + targets1 + "]+" + "[" + targets2 + "]?)+")
-	return len(re.Find([]byte(_word))) == len([]byte(_word))
+	result = stage1 + stage2 + stage3
+	return result, err
 }
