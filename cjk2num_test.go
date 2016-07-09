@@ -79,7 +79,7 @@ func Example_case6() {
 
 // Example ７
 func Example_case7() {
-	res, _ := Convert("3ダース")
+	res, _ := Convert("3万１ダース")
 	fmt.Printf("%d", res)
-	//Output:36
+	//Output:360012
 }
