@@ -46,5 +46,5 @@ func main() {
 		fmt.Fprintln(os.Stderr, err.Error())
 		os.Exit(1)
 	}
-	fmt.Println(fmt.Sprintf("%.0f", num))
+	fmt.Println(fmt.Sprintf("%d", num))
 }
