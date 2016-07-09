@@ -21,20 +21,20 @@ $ cjk2num 二百五十一
 
 ## ライブラリとしての使い方
 
-漢数字をstring型で渡すとfloat64の数字として返ってくる。
+漢数字をstring型で渡すとint64の数字として返ってくる。
 
 ```
 import (
 	"github.com/kurehajime/cjk2num"
 )
 func main(){
-  var num float64
+  var num int64
   var 漢数字="千二百六十万"
   num, err := cjk2num.Convert(漢数字)
   if err != nil {
     Println(err.Error())
   }
-  Println(num)//12600000.0000
+  Println(num)//12600000
 }
 ```
 
