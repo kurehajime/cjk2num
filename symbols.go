@@ -1,7 +1,7 @@
 package cjk2num
 
 //あらかじめ用意されたsymbolを取得
-func getPresetSymols() []Symbol {
+func GetPresetSymols() []Symbol {
 	return symbols
 }
 

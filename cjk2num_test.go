@@ -86,7 +86,7 @@ func Example_case7() {
 
 // Example 8　オリジナルの桁を定義
 func Example_case8() {
-	presetSymbols := getPresetSymols()                    //プリセットされた記号定義を取得
+	presetSymbols := GetPresetSymols()                    //プリセットされた記号定義を取得
 	originalSymbol := BreakSymbol{"たこ", 8}                //オリジナルの単位を作成
 	presetSymbols = append(presetSymbols, originalSymbol) //プリセットに加える
 	res, _ := ConvertBy("10たこ", presetSymbols)
