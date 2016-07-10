@@ -93,3 +93,23 @@ func Example_case8() {
 	fmt.Printf("%d", res)
 	//Output:80
 }
+
+// Example 9　オリジナルの数字を定義
+func Example_case9() {
+	//タミル文字(தமிழ்)
+	originalSymbols := []Symbol{
+		NumberSymbol{"௦", 0},
+		NumberSymbol{"௧", 1},
+		NumberSymbol{"௨", 2},
+		NumberSymbol{"௩", 3},
+		NumberSymbol{"௪", 4},
+		NumberSymbol{"௫", 5},
+		NumberSymbol{"௬", 6},
+		NumberSymbol{"௭", 7},
+		NumberSymbol{"௮", 8},
+		NumberSymbol{"௯", 9},
+	}
+	res, _ := ConvertBy("௯௯௫௬௦௮௩", originalSymbols)
+	fmt.Printf("%d", res)
+	//Output:9956083
+}
