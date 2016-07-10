@@ -35,51 +35,61 @@ func check(t *testing.T, input string, ans int64) {
 	}
 }
 
-// Example 1
+// Example 1 千や百と言った記号を用いないパターン
 func Example_case1() {
 	res, _ := Convert("一九八四")
 	fmt.Printf("%d", res)
 	//Output:1984
 }
 
-// Example 2
+// Example 2　億や千などの記号を用いるパターン
 func Example_case2() {
 	res, _ := Convert("一億二千三百四十五万六千七百八十九")
 	fmt.Printf("%d", res)
 	//Output:123456789
 }
 
-// Example 3
+// Example 3 大字を使ったパターン
 func Example_case3() {
 	res, _ := Convert("壱萬弐千参百")
 	fmt.Printf("%d", res)
 	//Output:12300
 }
 
-// Example 4
+// Example 4 〇(れい:まると違う)を含むパターン
 func Example_case4() {
 	res, _ := Convert("一〇九")
 	fmt.Printf("%d", res)
 	//Output:109
 }
 
-// Example 5
+// Example 5 中文
 func Example_case5() {
 	res, _ := Convert("壹億貳仟叁佰肆拾伍萬陸仟柒佰捌拾玖")
 	fmt.Printf("%d", res)
 	//Output:123456789
 }
 
-// Example 6
+// Example 6 한글
 func Example_case6() {
 	res, _ := Convert("오만육천칠백팔십구")
 	fmt.Printf("%d", res)
 	//Output:56789
 }
 
-// Example ７
+// Example ７変則的な単位
 func Example_case7() {
 	res, _ := Convert("3万１ダース")
 	fmt.Printf("%d", res)
 	//Output:360012
+}
+
+// Example 8　オリジナルの桁を定義
+func Example_case8() {
+	presetSymbols := getPresetSymols()                    //プリセットされた記号定義を取得
+	originalSymbol := BreakSymbol{"たこ", 8}                //オリジナルの単位を作成
+	presetSymbols = append(presetSymbols, originalSymbol) //プリセットに加える
+	res, _ := ConvertBy("10たこ", presetSymbols)
+	fmt.Printf("%d", res)
+	//Output:80
 }
