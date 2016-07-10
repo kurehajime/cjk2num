@@ -108,8 +108,11 @@ func Example_case9() {
 		NumberSymbol{"௭", 7},
 		NumberSymbol{"௮", 8},
 		NumberSymbol{"௯", 9},
+		NonBreakSymbol{"௰", 10},
+		NonBreakSymbol{"௱", 100},
+		NonBreakSymbol{"௲", 1000},
 	}
-	res, _ := ConvertBy("௯௯௫௬௦௮௩", originalSymbols)
+	res, _ := ConvertBy("௫௲௮", originalSymbols)
 	fmt.Printf("%d", res)
-	//Output:9956083
+	//Output:5008
 }
