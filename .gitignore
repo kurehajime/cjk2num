@@ -4,3 +4,7 @@ cmd/kan2num/kan2num
 bin
 
 cmd/cjk2num/cjk2num
+
+.vscode/launch.json
+
+cmd/cjk2num/debug
