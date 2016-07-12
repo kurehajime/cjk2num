@@ -1,11 +1,11 @@
 package cjk2num
 
-//あらかじめ用意されたsymbolを取得
+//GetPresetSymols あらかじめ用意されたsymbolを取得
 func GetPresetSymols() []Symbol {
-	return preset_symbols
+	return presetSymbols
 }
 
-var preset_symbols = []Symbol{
+var presetSymbols = []Symbol{
 	//BreakSymbol
 	BreakSymbol{"京", 10000 * 10000 * 10000 * 10000},
 	BreakSymbol{"兆", 10000 * 10000 * 10000},

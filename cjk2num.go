@@ -78,7 +78,7 @@ func (sym NumberSymbol) Calc(stage1, stage2, stage3 int64) (int64, int64, int64,
 
 // Convert /漢数字|中文数字|한자 숫자/  to number------------------
 func Convert(word string) (result int64, err error) {
-	return ConvertBy(word, preset_symbols)
+	return ConvertBy(word, presetSymbols)
 }
 
 // ConvertBy :オリジナルの桁定義を指定して変換 ------------------
