@@ -85,12 +85,6 @@ func Convert(word string) (result int64, err error) {
 func ConvertBy(word string, symbols []Symbol) (result int64, err error) {
 	runes := []rune(word)
 	var stage1, stage2, stage3 int64
-	defer func() { //オーバーフローでコケるかも
-		r := recover()
-		if r != nil {
-			result, err = 0, fmt.Errorf("%v", r)
-		}
-	}()
 L:
 	for len(runes) > 0 {
 		for i := range symbols {
@@ -99,6 +93,9 @@ L:
 				stage1, stage2, stage3, err = symbols[i].Calc(stage1, stage2, stage3)
 				if err != nil {
 					return 0, err
+				}
+				if stage1 < 0 || stage2 < 0 || stage3 < 0 {
+					return 0, fmt.Errorf("Over Flow? %d", stage1+stage2+stage3)
 				}
 				continue L
 			}

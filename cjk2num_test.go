@@ -20,6 +20,10 @@ func TestConvert(t *testing.T) {
 	if _, err := Convert("一億万"); err == nil {
 		t.Errorf("passed invalid format \n")
 	}
+	// expect overflow
+	if result, err := Convert("3689348814741910323036893488147419103230"); err == nil {
+		t.Errorf("passed invalid format \n%d", result)
+	}
 }
 
 //Check
