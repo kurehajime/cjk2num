@@ -78,11 +78,11 @@ func (sym NumberSymbol) Calc(stage1, stage2, stage3 int64) (int64, int64, int64,
 
 // Convert /漢数字|中文数字|한자 숫자/  to number------------------
 func Convert(word string) (result int64, err error) {
-	return ConvertBy(word, symbols)
+	return ConvertBy(word, preset_symbols)
 }
 
 // ConvertBy :オリジナルの桁定義を指定して変換 ------------------
-func ConvertBy(word string, sbs []Symbol) (result int64, err error) {
+func ConvertBy(word string, symbols []Symbol) (result int64, err error) {
 	runes := []rune(word)
 	var stage1, stage2, stage3 int64
 	defer func() { //オーバーフローでコケるかも
@@ -93,10 +93,10 @@ func ConvertBy(word string, sbs []Symbol) (result int64, err error) {
 	}()
 L:
 	for len(runes) > 0 {
-		for i := range sbs {
-			if strings.Index(string(runes), sbs[i].Key()) == 0 {
-				runes = runes[len([]rune(sbs[i].Key())):]
-				stage1, stage2, stage3, err = sbs[i].Calc(stage1, stage2, stage3)
+		for i := range symbols {
+			if strings.Index(string(runes), symbols[i].Key()) == 0 {
+				runes = runes[len([]rune(symbols[i].Key())):]
+				stage1, stage2, stage3, err = symbols[i].Calc(stage1, stage2, stage3)
 				if err != nil {
 					return 0, err
 				}
