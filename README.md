@@ -42,6 +42,13 @@ func main(){
 
 [ここから](https://github.com/kurehajime/cjk2num/releases)ダウンロード。
 
+またはgo install
+
+```
+go install github.com/kurehajime/cjk2num/cmd/cjk2num@latest
+
+```
+
 ライブラリとして利用する場合はgo getで。
 
 ```
