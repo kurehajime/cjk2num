@@ -46,7 +46,6 @@ func main(){
 
 ```
 go install github.com/kurehajime/cjk2num/cmd/cjk2num@latest
-
 ```
 
 ライブラリとして利用する場合はgo getで。
